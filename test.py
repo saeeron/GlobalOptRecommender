@@ -20,7 +20,7 @@ print(ml_df.head(10))
 A = ml_df[['user id','item id', 'rating']].pivot(index = "user id", columns = "item id", values = "rating").values
 
 sparsity_ = (A.size - np.isnan(A).sum()) / A.size
-print("Utility matrix is {:0.02f} sparse".format(sparsity_ * 100))
+print("Utility matrix is {:0.02f} dense".format(sparsity_ * 100))
 
 rank_of_A  = 2
 print("total number of parameters : {:d}".format(int(rank_of_A * A.shape[0] + rank_of_A * A.shape[1])))
@@ -46,5 +46,6 @@ lw = np.zeros(rank_of_A * A.shape[0] + rank_of_A * A.shape[1])
 up = np.ones(rank_of_A * A.shape[0] + rank_of_A * A.shape[1])
 
 # running optimization 
-
-ret = optimize.dual_annealing(objF_, bounds=list(zip(lw, up)), maxiter = 1000, seed = 1234) 
+if __name__ == "__main__":
+	#ret = optimize.differential_evolution(objF_, bounds=list(zip(lw, up)), workers= 4, updating="deferred", maxiter=1000, disp = True) 
+	ret = optimize.dual_annealing(objF_, bounds=list(zip(lw, up)), maxiter=100, seed = 1414) 
